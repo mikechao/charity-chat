@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for Charity Chat */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400;
+}
+
+/* Custom component styles */
+@layer components {
+  .gradient-text {
+    @apply bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent;
+  }
+  
+  .feature-card {
+    @apply p-6 rounded-xl border border-gray-200 bg-white text-center transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-lg;
+  }
+  
+  .step-card {
+    @apply flex items-start gap-6 p-6 rounded-xl border border-gray-200 bg-white;
+  }
+  
+  .step-number {
+    @apply flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white flex items-center justify-center font-semibold text-lg;
+  }
+  
+  .cta-button {
+    @apply inline-block px-8 py-4 bg-white text-blue-600 font-semibold text-lg rounded-lg transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl;
+  }
+}
