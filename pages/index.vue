@@ -22,7 +22,7 @@ function registerTools(server: McpServer) {
         }
       }
       console.log('Charity search results:', response.length, 'results found')
-      charityResults.value = response
+      charityResults.value = [...charityResults.value, ...response]
       showResults.value = true
       return {
         content: [{ type: 'text', text: `Found the following charities matching your criteria: ${JSON.stringify(response)}` }],
