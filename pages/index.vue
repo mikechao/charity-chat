@@ -14,7 +14,20 @@ if (import.meta.client) {
   })
 
   server.tool('charity_search', 'Search for charities that the user is interested in', charitySearchParamsSchema.shape, async (params) => {
-    console.log('charity_search called with params:', params)
+    $fetch('/api/charity/search', {
+      method: 'POST',
+      body: params,
+    }).then((response) => {
+      showResults.value = true
+      console.log('Charity search results:', response)
+      return response
+    }).catch((error) => {
+      console.error('Error fetching charity search results:', error)
+      showResults.value = false
+      return {
+        content: [{ type: 'text', text: 'Failed to fetch charity search results. Please try again later.' }, { isError: true }],
+      }
+    })
     return {
       content: [{ type: 'text', text: `Searching for charities with the following parameters: ${JSON.stringify(params)}` }],
     }
