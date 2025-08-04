@@ -41,12 +41,13 @@
 import type { PropType } from 'vue';
 import type { CharitySearchResult } from '~/types/charity-search-result';
 
-defineProps({
+const props = defineProps({
   charity: {
     type: Object as PropType<CharitySearchResult>,
     required: true
   }
 });
+console.log('CharityResultCard props:', props.charity)
 </script>
 
 <style scoped>
