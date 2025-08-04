@@ -1,7 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@import 'tailwindcss';
+@import '@nuxt/ui';
 /* Custom styles for Charity Chat */
 html {
   scroll-behavior: smooth;
@@ -13,36 +11,111 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-slate-100;
+  background-color: rgb(241 245 249);
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 rounded;
+  background-color: rgb(203 213 225);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400;
+  background-color: rgb(148 163 184);
 }
 
 /* Custom component styles */
-@layer components {
+.gradient-text {
+  background: linear-gradient(to right, rgb(59 130 246), rgb(147 51 234), rgb(29 78 216));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-size: 200% 100%;
+  animation: gradient-shift 3s ease-in-out infinite;
+}
+
+/* Custom animations */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Enhanced hover effects */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Enhanced button animations */
+.btn-enhanced {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-enhanced:hover::before {
+  left: 100%;
+}
+
+/* Responsive enhancements */
+@media (max-width: 768px) {
   .gradient-text {
-    @apply bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent;
-  }
-  
-  .feature-card {
-    @apply p-6 rounded-xl border border-gray-200 bg-white text-center transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-lg;
-  }
-  
-  .step-card {
-    @apply flex items-start gap-6 p-6 rounded-xl border border-gray-200 bg-white;
-  }
-  
-  .step-number {
-    @apply flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white flex items-center justify-center font-semibold text-lg;
-  }
-  
-  .cta-button {
-    @apply inline-block px-8 py-4 bg-white text-blue-600 font-semibold text-lg rounded-lg transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl;
+    font-size: clamp(2.5rem, 8vw, 4rem);
   }
 }
