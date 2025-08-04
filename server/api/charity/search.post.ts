@@ -53,6 +53,5 @@ export default defineEventHandler(async (event): Promise<CharitySearchResult[]> 
   }
   const charityResults = response.data as CharitySearchResult[]
 
-  console.log('Charity API response:', charityResults)
   return charityResults
 })

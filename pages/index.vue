@@ -6,6 +6,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { charitySearchParamsSchema } from '~/types/charity-search-params'
 
 const showResults = ref(false)
+const charityResults = ref<CharitySearchResult[]>([])
 
 if (import.meta.client) {
   const transport: Transport = new TabServerTransport({ allowedOrigins: ['*'] })
@@ -20,12 +21,15 @@ if (import.meta.client) {
         method: 'POST',
         body: params,
       })
-      showResults.value = true
+
       if (response.length === 0) {
         return {
           content: [{ type: 'text', text: `No charities found matching your criteria. Try changing your parameters: ${JSON.stringify(params)}` }],
         }
       }
+      console.log('Charity search results:', response.length, 'results found')
+      charityResults.value = response
+      showResults.value = true
       return {
         content: [{ type: 'text', text: `Found the following charities matching your criteria: ${JSON.stringify(response)}` }],
       }
@@ -44,6 +48,7 @@ if (import.meta.client) {
 
 <template>
   <div>
-    <WelcomeComponent />
+    <WelcomeComponent v-if="!showResults" />
+    <CharityResultList v-if="showResults" :charities="charityResults" />
   </div>
 </template>
