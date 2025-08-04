@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Transport } from '@modelcontextprotocol/sdk/shared/transport.js'
+import type { CharitySearchResult } from '~/types/charity-search-result'
 import { TabServerTransport } from '@mcp-b/transports'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { charitySearchParamsSchema } from '~/types/charity-search-params'
@@ -14,22 +15,26 @@ if (import.meta.client) {
   })
 
   server.tool('charity_search', 'Search for charities that the user is interested in', charitySearchParamsSchema.shape, async (params) => {
-    $fetch('/api/charity/search', {
-      method: 'POST',
-      body: params,
-    }).then((response) => {
+    try {
+      const response = await $fetch<CharitySearchResult[]>('/api/charity/search', {
+        method: 'POST',
+        body: params,
+      })
       showResults.value = true
-      console.log('Charity search results:', response)
-      return response
-    }).catch((error) => {
-      console.error('Error fetching charity search results:', error)
-      showResults.value = false
-      return {
-        content: [{ type: 'text', text: 'Failed to fetch charity search results. Please try again later.' }, { isError: true }],
+      if (response.length === 0) {
+        return {
+          content: [{ type: 'text', text: `No charities found matching your criteria. Try changing your parameters: ${JSON.stringify(params)}` }],
+        }
       }
-    })
-    return {
-      content: [{ type: 'text', text: `Searching for charities with the following parameters: ${JSON.stringify(params)}` }],
+      return {
+        content: [{ type: 'text', text: `Found the following charities matching your criteria: ${JSON.stringify(response)}` }],
+      }
+    }
+    catch (error) {
+      console.error('Error in charity_search tool:', error)
+      return {
+        content: [{ type: 'text', text: 'An error occurred while searching for charities.' }],
+      }
     }
   })
 

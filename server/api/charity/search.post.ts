@@ -1,10 +1,11 @@
 import type { CharityApiResponse } from '~/types/charity-api-response'
 import type { CharitySearchParams } from '~/types/charity-search-params'
+import type { CharitySearchResult } from '~/types/charity-search-result'
 import { charitySearchParamsSchema } from '~/types/charity-search-params'
 
 const API_URL = 'http://data.orghunter.com/v1/charitysearch'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event): Promise<CharitySearchResult[]> => {
   const body = await readBody<CharitySearchParams>(event)
 
   // Validate the input parameters
@@ -50,5 +51,8 @@ export default defineEventHandler(async (event) => {
       message: 'Failed to fetch data from the charity API',
     })
   }
-  return response.data
+  const charityResults = response.data as CharitySearchResult[]
+
+  console.log('Charity API response:', charityResults)
+  return charityResults
 })
