@@ -8,13 +8,7 @@ import { charitySearchParamsSchema } from '~/types/charity-search-params'
 const showResults = ref(false)
 const charityResults = ref<CharitySearchResult[]>([])
 
-if (import.meta.client) {
-  const transport: Transport = new TabServerTransport({ allowedOrigins: ['*'] })
-  const server = new McpServer({
-    name: 'Charity Search',
-    version: '1.0.0',
-  })
-
+function registerTools(server: McpServer) {
   server.tool('charity_search', 'Search for charities that the user is interested in', charitySearchParamsSchema.shape, async (params) => {
     try {
       const response = await $fetch<CharitySearchResult[]>('/api/charity/search', {
@@ -41,7 +35,15 @@ if (import.meta.client) {
       }
     }
   })
+}
 
+if (import.meta.client) {
+  const transport: Transport = new TabServerTransport({ allowedOrigins: ['*'] })
+  const server = new McpServer({
+    name: 'Charity Search',
+    version: '1.0.0',
+  })
+  registerTools(server)
   await server.connect(transport)
 }
 </script>

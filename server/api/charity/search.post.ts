@@ -18,7 +18,7 @@ export default defineEventHandler(async (event): Promise<CharitySearchResult[]> 
       data: validationResult.error,
     })
   }
-
+  console.log('Validated charity search parameters:', validationResult.data)
   const runtimeConfig = useRuntimeConfig()
 
   const apiKey = runtimeConfig.charityApiKey
@@ -52,6 +52,6 @@ export default defineEventHandler(async (event): Promise<CharitySearchResult[]> 
     })
   }
   const charityResults = response.data as CharitySearchResult[]
-
+  console.log('Charity search results:', charityResults.length, 'results found')
   return charityResults
 })
