@@ -1,3 +1,32 @@
+<script setup lang="ts">
+import type { PropType } from 'vue'
+import type { CharitySearchResult } from '~/types/charity-search-result'
+
+defineProps({
+  charities: {
+    type: Array as PropType<CharitySearchResult[]>,
+    required: true,
+    default: () => [],
+  },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+  showLoadMore: {
+    type: Boolean,
+    default: false,
+  },
+  loadingMore: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+defineEmits<{
+  loadMore: []
+}>()
+</script>
+
 <template>
   <div class="charity-results-container">
     <!-- Header Section -->
@@ -12,7 +41,7 @@
 
     <!-- Loading State -->
     <div v-if="loading" class="flex justify-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" />
     </div>
 
     <!-- Empty State -->
@@ -22,8 +51,12 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.935-6.02-2.457M15 21v-3a6 6 0 00-6-6l-3 3-3-3a6 6 0 00-6 6v3" />
         </svg>
       </div>
-      <h3 class="text-lg font-medium text-gray-900 mb-2">No charities found</h3>
-      <p class="text-gray-500">Try adjusting your search criteria</p>
+      <h3 class="text-lg font-medium text-gray-900 mb-2">
+        No charities found
+      </h3>
+      <p class="text-gray-500">
+        Try adjusting your search criteria
+      </p>
     </div>
 
     <!-- Results Grid -->
@@ -39,14 +72,14 @@
     <!-- Load More Button (if needed) -->
     <div v-if="showLoadMore" class="text-center mt-8">
       <button
-        @click="$emit('loadMore')"
         class="px-6 py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         :disabled="loadingMore"
+        @click="$emit('loadMore')"
       >
         <span v-if="loadingMore" class="flex items-center">
           <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
           </svg>
           Loading...
         </span>
@@ -55,35 +88,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { PropType } from 'vue';
-import type { CharitySearchResult } from '~/types/charity-search-result';
-
-defineProps({
-  charities: {
-    type: Array as PropType<CharitySearchResult[]>,
-    required: true,
-    default: () => []
-  },
-  loading: {
-    type: Boolean,
-    default: false
-  },
-  showLoadMore: {
-    type: Boolean,
-    default: false
-  },
-  loadingMore: {
-    type: Boolean,
-    default: false
-  }
-});
-
-defineEmits<{
-  loadMore: []
-}>();
-</script>
 
 <style scoped>
 .charity-results-container {
@@ -113,7 +117,7 @@ defineEmits<{
   .charity-results-container {
     padding: 1rem;
   }
-  
+
   .charity-grid {
     grid-template-columns: 1fr;
     gap: 1rem;

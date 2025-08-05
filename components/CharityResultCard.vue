@@ -1,17 +1,34 @@
+<script setup lang="ts">
+import type { PropType } from 'vue'
+import type { CharitySearchResult } from '~/types/charity-search-result'
+
+const props = defineProps({
+  charity: {
+    type: Object as PropType<CharitySearchResult>,
+    required: true,
+  },
+})
+console.log('CharityResultCard props:', props.charity)
+</script>
+
 <template>
   <div class="charity-card border rounded-lg p-4 shadow-md">
-    <h2 class="text-xl font-bold mb-2">{{ charity.charityName }}</h2>
+    <h2 class="text-xl font-bold mb-2">
+      {{ charity.charityName }}
+    </h2>
     <p class="text-sm text-gray-600 mb-1">
       {{ charity.city }}, {{ charity.state }} {{ charity.zipCode }}
     </p>
-    <p class="text-sm text-gray-600 mb-4">{{ charity.missionStatement }}</p>
+    <p class="text-sm text-gray-600 mb-4">
+      {{ charity.missionStatement }}
+    </p>
 
     <div class="flex items-center mb-4">
       <span
         class="px-2 py-1 text-xs font-semibold rounded-full"
         :class="{
           'bg-green-100 text-green-800': String(charity.acceptingDonations) === '1',
-          'bg-red-100 text-red-800': String(charity.acceptingDonations) === '0'
+          'bg-red-100 text-red-800': String(charity.acceptingDonations) === '0',
         }"
       >
         {{ String(charity.acceptingDonations) === '1' ? 'Accepting Donations' : 'Not Accepting Donations' }}
@@ -49,19 +66,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { PropType } from 'vue';
-import type { CharitySearchResult } from '~/types/charity-search-result';
-
-const props = defineProps({
-  charity: {
-    type: Object as PropType<CharitySearchResult>,
-    required: true
-  }
-});
-console.log('CharityResultCard props:', props.charity)
-</script>
 
 <style scoped>
 .charity-card {

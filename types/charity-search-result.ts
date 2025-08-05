@@ -6,65 +6,65 @@ export interface CharitySearchResult {
   /**
    * Employer Identification Number (EIN)
    */
-  ein: string;
+  ein: string
   /**
    * Charity Name
    */
-  charityName: string;
+  charityName: string
   /**
    * Category Description
    */
-  category: string;
+  category: string
   /**
    * URL Link to the OrgHunter.com Detail Page
    */
-  url: string;
+  url: string
   /**
    * Organization City
    */
-  city: string;
+  city: string
   /**
    * Organization State
    */
-  state: string;
+  state: string
   /**
    * Organization Zip Code
    */
-  zipCode: number;
+  zipCode: number
   /**
    * Organization Website Address
    */
-  website: string;
+  website: string
   /**
    * Organization Mission Statement
    */
-  missionStatement: string;
+  missionStatement: string
   /**
    * Longitude Value
    */
-  longitude: string;
+  longitude: string
   /**
    * Latitude Value
    */
-  latitude: string;
+  latitude: string
   /**
    * Organization Accepts Donations 1=Yes, 0=No
    */
-  acceptingDonations: string;
+  acceptingDonations: string
   /**
    * Search Result Score
    */
-  start: number;
+  start: number
   /**
    * Number of Records Requested
    */
-  rows: number;
+  rows: number
   /**
    * Total Records Available
    */
-  recordCount: number;
+  recordCount: number
   /**
    * Search Result Score
    */
-  score: number;
+  score: number
 }
