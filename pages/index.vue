@@ -8,6 +8,7 @@ import { charitySearchParamsSchema } from '~/types/charity-search-params'
 
 const showResults = ref(false)
 const charityResults = ref<CharitySearchResult[]>([])
+const charityCategories: CharityCategory[] = []
 
 function registerTools(server: McpServer) {
   server.tool('charity_search', 'Search for charities that the user is interested in', charitySearchParamsSchema.shape, async (params) => {
@@ -39,6 +40,12 @@ function registerTools(server: McpServer) {
   })
 
   server.tool('get_charity_categories', 'Gets the list of categories that charities can belong to', {}, async () => {
+    if (charityCategories.length > 0) {
+      console.log('Returning cached charity categories:', charityCategories)
+      return {
+        content: [{ type: 'text' as const, text: `Available charity categories: ${JSON.stringify(charityCategories)}` }],
+      }
+    }
     try {
       const response = await $fetch<CharityCategory[]>('/api/charity/categories')
       if (response.length === 0) {
@@ -47,8 +54,9 @@ function registerTools(server: McpServer) {
         }
       }
       console.log('Charity categories:', response)
+      charityCategories.push(...response)
       return {
-        content: [{ type: 'text' as const, text: `Available charity categories: ${response.join(', ')}` }],
+        content: [{ type: 'text' as const, text: `Available charity categories: ${JSON.stringify(response)}` }],
       }
     }
     catch (error) {
