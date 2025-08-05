@@ -9,6 +9,7 @@ import { createSearchParametersSchema } from '~/types/charity-search-params'
 
 const showResults = ref(false)
 const charityResults = ref<CharitySearchResult[]>([])
+const currentCharityDetails = ref<CharityDetails | null>(null)
 
 async function registerTools(server: McpServer) {
   const charitySearchParamsSchema = await createSearchParametersSchema()
@@ -53,6 +54,10 @@ async function registerTools(server: McpServer) {
         }
       }
       console.log('Charity details fetched:', response)
+
+      // Set the current charity details to trigger the modal
+      currentCharityDetails.value = response
+
       return {
         content: [{ type: 'text' as const, text: `Details for charity ${response.name}: ${JSON.stringify(response)}` }],
       }
@@ -76,11 +81,24 @@ if (import.meta.client) {
   await registerTools(server)
   await server.connect(transport)
 }
+
+// Clear charity details after a short delay to allow modal to open
+watch(currentCharityDetails, (newDetails) => {
+  if (newDetails) {
+    setTimeout(() => {
+      currentCharityDetails.value = null
+    }, 100)
+  }
+})
 </script>
 
 <template>
   <div>
     <WelcomeComponent v-if="!showResults" />
-    <CharityResultList v-if="showResults" :charities="charityResults" />
+    <CharityResultList
+      v-if="showResults"
+      :charities="charityResults"
+      :external-charity-details="currentCharityDetails"
+    />
   </div>
 </template>

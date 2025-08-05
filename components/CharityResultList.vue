@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
+import type { CharityDetailsSearchParams } from '~/types/charity-details-params'
+import type { CharityDetails } from '~/types/charity-details-results'
 import type { CharitySearchResult } from '~/types/charity-search-result'
 
-defineProps({
+const props = defineProps({
   charities: {
     type: Array as PropType<CharitySearchResult[]>,
-    required: true,
     default: () => [],
   },
   loading: {
@@ -20,11 +21,75 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  // New prop for externally provided charity details (from MCP tool)
+  externalCharityDetails: {
+    type: Object as PropType<CharityDetails | null>,
+    default: null,
+  },
 })
 
 defineEmits<{
   loadMore: []
 }>()
+
+// Modal state management
+const showDetailsModal = ref(false)
+const charityDetails = ref<CharityDetails | null>(null)
+const loadingDetails = ref(false)
+
+// Handle charity details card click
+async function handleCharityDetailsRequest(charity: CharitySearchResult) {
+  // Close any existing modal first
+  showDetailsModal.value = false
+  charityDetails.value = null
+
+  // Open new modal
+  showDetailsModal.value = true
+
+  // Fetch details
+  await fetchCharityDetails(charity.ein)
+}
+
+async function fetchCharityDetails(ein: string | number) {
+  loadingDetails.value = true
+
+  try {
+    const params: CharityDetailsSearchParams = {
+      ein: String(ein),
+    }
+
+    const response = await $fetch<CharityDetails>('/api/charity/details', {
+      method: 'POST',
+      body: params,
+    })
+
+    charityDetails.value = response
+  }
+  catch (err) {
+    console.error('Error fetching charity details:', err)
+  }
+  finally {
+    loadingDetails.value = false
+  }
+}
+
+function closeDetailsModal() {
+  showDetailsModal.value = false
+  charityDetails.value = null
+}
+
+// Watch for external charity details (from MCP tool)
+watch(() => props.externalCharityDetails, (newDetails) => {
+  if (newDetails) {
+    // Close any existing modal first
+    showDetailsModal.value = false
+    charityDetails.value = null
+
+    // Set new details and open modal
+    charityDetails.value = newDetails
+    showDetailsModal.value = true
+  }
+}, { immediate: true })
 </script>
 
 <template>
@@ -66,6 +131,7 @@ defineEmits<{
         :key="charity.ein || charity.charityName"
         :charity="charity"
         class="charity-grid-item"
+        @details-requested="handleCharityDetailsRequest"
       />
     </div>
 
@@ -86,6 +152,14 @@ defineEmits<{
         <span v-else>Load More</span>
       </button>
     </div>
+
+    <!-- Centralized Details Modal -->
+    <CharityDetailsModal
+      :charity-details="charityDetails"
+      :is-open="showDetailsModal"
+      :loading="loadingDetails"
+      @close="closeDetailsModal"
+    />
   </div>
 </template>
 

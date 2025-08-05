@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import type { CharityDetailsSearchParams } from '~/types/charity-details-params'
-import type { CharityDetails } from '~/types/charity-details-results'
 import type { CharitySearchResult } from '~/types/charity-search-result'
 
 const props = defineProps({
@@ -11,44 +9,12 @@ const props = defineProps({
   },
 })
 
-const showDetailsModal = ref(false)
-const charityDetails = ref<CharityDetails | null>(null)
-const loadingDetails = ref(false)
+const emit = defineEmits<{
+  detailsRequested: [charity: CharitySearchResult]
+}>()
 
-async function openDetailsModal() {
-  showDetailsModal.value = true
-
-  if (!charityDetails.value) {
-    await fetchCharityDetails()
-  }
-}
-
-function closeDetailsModal() {
-  showDetailsModal.value = false
-}
-
-async function fetchCharityDetails() {
-  loadingDetails.value = true
-
-  try {
-    const params: CharityDetailsSearchParams = {
-      ein: String(props.charity.ein),
-    }
-
-    const response = await $fetch<CharityDetails>('/api/charity/details', {
-      method: 'POST',
-      body: params,
-    })
-
-    charityDetails.value = response
-  }
-  catch (err) {
-    console.error('Error fetching charity details:', err)
-    // You could add error handling here if needed
-  }
-  finally {
-    loadingDetails.value = false
-  }
+function handleDetailsClick() {
+  emit('detailsRequested', props.charity)
 }
 
 console.log('CharityResultCard props:', props.charity)
@@ -83,7 +49,7 @@ console.log('CharityResultCard props:', props.charity)
         variant="solid"
         color="primary"
         class="transition-all duration-200"
-        @click="openDetailsModal"
+        @click="handleDetailsClick"
       >
         <template #leading>
           <UIcon name="i-heroicons-information-circle" />
@@ -118,14 +84,6 @@ console.log('CharityResultCard props:', props.charity)
         <span>View on OrgHunter</span>
       </UButton>
     </div>
-
-    <!-- Details Modal -->
-    <CharityDetailsModal
-      :charity-details="charityDetails"
-      :is-open="showDetailsModal"
-      :loading="loadingDetails"
-      @close="closeDetailsModal"
-    />
   </div>
 </template>
 
