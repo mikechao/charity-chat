@@ -18,20 +18,21 @@ function registerTools(server: McpServer) {
 
       if (response.length === 0) {
         return {
-          content: [{ type: 'text', text: `No charities found matching your criteria. Try changing your parameters: ${JSON.stringify(params)}` }],
+          content: [{ type: 'text' as const, text: `No charities found matching your criteria. Try changing your parameters: ${JSON.stringify(params)}` }],
         }
       }
       console.log('Charity search results:', response.length, 'results found')
       charityResults.value = [...charityResults.value, ...response]
       showResults.value = true
       return {
-        content: [{ type: 'text', text: `Found the following charities matching your criteria: ${JSON.stringify(response)}` }],
+        content: [{ type: 'text' as const, text: `Found the following charities matching your criteria: ${JSON.stringify(response)}` }],
       }
     }
     catch (error) {
       console.error('Error in charity_search tool:', error)
       return {
-        content: [{ type: 'text', text: 'An error occurred while searching for charities.' }],
+        content: [{ type: 'text' as const, text: 'An error occurred while searching for charities.' }],
+        isError: true,
       }
     }
   })
