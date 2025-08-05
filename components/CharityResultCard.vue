@@ -10,29 +10,42 @@
       <span
         class="px-2 py-1 text-xs font-semibold rounded-full"
         :class="{
-          'bg-green-100 text-green-800': charity.acceptingDonations === '1',
-          'bg-red-100 text-red-800': charity.acceptingDonations === '0'
+          'bg-green-100 text-green-800': String(charity.acceptingDonations) === '1',
+          'bg-red-100 text-red-800': String(charity.acceptingDonations) === '0'
         }"
       >
-        {{ charity.acceptingDonations === '1' ? 'Accepting Donations' : 'Not Accepting Donations' }}
+        {{ String(charity.acceptingDonations) === '1' ? 'Accepting Donations' : 'Not Accepting Donations' }}
       </span>
     </div>
 
     <div class="flex space-x-4">
-      <a
-        :href="charity.website"
+      <UButton
+        :to="charity.website"
         target="_blank"
-        class="text-blue-500 hover:underline"
+        external
+        variant="outline"
+        color="primary"
+        class="transition-all duration-200"
+        :disabled="!charity.website || charity.website.length === 0"
       >
-        Visit Website
-      </a>
-      <a
-        :href="charity.url"
+        <template #leading>
+          <UIcon name="i-heroicons-arrow-top-right-on-square" />
+        </template>
+        <span>Visit Website</span>
+      </UButton>
+      <UButton
+        :to="charity.url"
         target="_blank"
-        class="text-blue-500 hover:underline"
+        external
+        variant="outline"
+        color="primary"
+        class="transition-all duration-200"
       >
-        View on OrgHunter
-      </a>
+        <template #leading>
+          <UIcon name="i-heroicons-arrow-top-right-on-square" />
+        </template>
+        <span>View on OrgHunter</span>
+      </UButton>
     </div>
   </div>
 </template>
