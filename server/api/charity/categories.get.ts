@@ -2,12 +2,11 @@ import type { CharityApiResponse } from '~/types/charity-api-response'
 import type { CharityCategory } from '~/types/charity-category'
 
 const API_URL = 'http://data.orghunter.com/v1/categories'
+const runtimeConfig = useRuntimeConfig()
+
+const apiKey = runtimeConfig.charityApiKey
 
 export default defineEventHandler(async (): Promise<CharityCategory[]> => {
-  const runtimeConfig = useRuntimeConfig()
-
-  const apiKey = runtimeConfig.charityApiKey
-
   if (!apiKey) {
     throw createError({
       statusCode: 500,

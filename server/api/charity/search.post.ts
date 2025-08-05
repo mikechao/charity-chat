@@ -4,6 +4,9 @@ import type { CharitySearchResult } from '~/types/charity-search-result'
 import { createSearchParametersSchema } from '~/types/charity-search-params'
 
 const API_URL = 'http://data.orghunter.com/v1/charitysearch'
+const runtimeConfig = useRuntimeConfig()
+
+const apiKey = runtimeConfig.charityApiKey
 
 export default defineEventHandler(async (event): Promise<CharitySearchResult[]> => {
   const body = await readBody<CharitySearchParams>(event)
@@ -19,9 +22,6 @@ export default defineEventHandler(async (event): Promise<CharitySearchResult[]> 
     })
   }
   console.log('Validated charity search parameters:', validationResult.data)
-  const runtimeConfig = useRuntimeConfig()
-
-  const apiKey = runtimeConfig.charityApiKey
 
   if (!apiKey) {
     throw createError({
