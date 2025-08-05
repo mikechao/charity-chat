@@ -1,9 +1,16 @@
 import { z } from 'zod'
 
+const categories: string[] = []
+
 async function fetchCharityCategories(): Promise<string[]> {
+  if (categories.length > 0) {
+    return categories
+  }
   try {
     const response = await $fetch<{ categoryDesc: string }[]>('/api/charity/categories')
-    return response.map(category => category.categoryDesc)
+    categories.push(...response.map(category => category.categoryDesc))
+    console.log('Fetched charity categories:', categories.length, 'categories found')
+    return categories
   }
   catch (error) {
     console.error('Error fetching charity categories:', error)
