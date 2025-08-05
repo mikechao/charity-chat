@@ -5,9 +5,10 @@
  *
  * https://charityapi.com/charity-api-basic-documentation
  */
-export interface CharityDetailsSearchParams {
-  /**
-   * Employer Identification Number (EIN)
-   */
-  ein: string
-}
+import { z } from 'zod'
+
+export const charityDetailsSearchParamsSchema = z.object({
+  ein: z.string().describe('Employer Identification Number (EIN)'),
+})
+
+export type CharityDetailsSearchParams = z.infer<typeof charityDetailsSearchParamsSchema>
