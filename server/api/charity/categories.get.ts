@@ -22,7 +22,8 @@ export default defineEventHandler(async (): Promise<CharityCategory[]> => {
     },
   })
 
-  if (!response || !response.data || response.code !== '200') {
+  if (!response || !response.data || String(response.code) !== '200') {
+    console.error('Failed to fetch data from the charity category API:', response)
     throw createError({
       statusCode: 500,
       message: 'Failed to fetch data from the charity category API',

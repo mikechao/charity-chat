@@ -45,7 +45,8 @@ export default defineEventHandler(async (event): Promise<CharitySearchResult[]> 
       Accept: 'application/json',
     },
   })
-  if (!response || !response.data || response.code !== '200') {
+  if (!response || !response.data || String(response.code) !== '200') {
+    console.error('Failed to fetch data from the charity API:', response)
     throw createError({
       statusCode: 500,
       message: 'Failed to fetch data from the charity API',
