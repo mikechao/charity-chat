@@ -1,13 +1,13 @@
 import type { CharityApiResponse } from '~/types/charity-api-response'
 import type { CharitySearchParams } from '~/types/charity-search-params'
 import type { CharitySearchResult } from '~/types/charity-search-result'
-import { charitySearchParamsSchema } from '~/types/charity-search-params'
+import { createSearchParametersSchema } from '~/types/charity-search-params'
 
 const API_URL = 'http://data.orghunter.com/v1/charitysearch'
 
 export default defineEventHandler(async (event): Promise<CharitySearchResult[]> => {
   const body = await readBody<CharitySearchParams>(event)
-
+  const charitySearchParamsSchema = await createSearchParametersSchema()
   // Validate the input parameters
   const validationResult = charitySearchParamsSchema.safeParse(body)
 
