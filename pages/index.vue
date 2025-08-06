@@ -33,7 +33,11 @@ async function registerTools(server: McpServer) {
       charityResults.value = [...charityResults.value, ...response]
       showResults.value = true
       return {
-        content: [{ type: 'text' as const, text: `Found the following charities matching your criteria: ${JSON.stringify(response)}` }],
+        content: [
+          { type: 'text' as const, text: `Found ${response.length} charities matching your criteria.` },
+          { type: 'text' as const, text: 'There are potentially more results available. Ask for the next page of results' },
+          { type: 'text' as const, text: `Found the following charities matching your criteria: ${JSON.stringify(response)}` },
+        ],
       }
     }
     catch (error) {
