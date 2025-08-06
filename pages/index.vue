@@ -12,6 +12,7 @@ const charityResults = ref<CharitySearchResult[]>([])
 const currentCharityDetails = ref<CharityDetails | null>(null)
 
 async function registerTools(server: McpServer) {
+  // #region charity_search tool registration
   const charitySearchParamsSchema = await createSearchParametersSchema()
   server.tool('charity_search', 'Search for charities that the user is interested in', charitySearchParamsSchema.shape, async (params) => {
     try {
@@ -40,7 +41,9 @@ async function registerTools(server: McpServer) {
       }
     }
   })
+  // #endregion
 
+  // #region charity_details tool registration
   server.tool('get_charity_details', 'Get detailed information about a specific charity', charityDetailsSearchParamsSchema.shape, async (params) => {
     try {
       const response = await $fetch<CharityDetails>('/api/charity/details', {
@@ -70,6 +73,17 @@ async function registerTools(server: McpServer) {
       }
     }
   })
+  // #endregion
+
+  // #region clear_charity_results tool registration
+  server.tool('clear_charity_results', 'Clear the current charity search results', {}, async () => {
+    const count = charityResults.value.length
+    charityResults.value = []
+    return {
+      content: [{ type: 'text' as const, text: `Cleared ${count} charity search results.` }],
+    }
+  })
+  // #endregion
 }
 
 if (import.meta.client) {
