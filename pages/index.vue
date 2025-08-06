@@ -141,6 +141,10 @@ watch(currentCharityDetails, (newDetails) => {
     }, 100)
   }
 })
+
+function handleLoadMore() {
+  console.log('Load more charities')
+}
 </script>
 
 <template>
@@ -150,6 +154,7 @@ watch(currentCharityDetails, (newDetails) => {
       v-if="showResults"
       :charities="charityResults"
       :external-charity-details="currentCharityDetails"
+      @load-more="handleLoadMore"
     />
   </div>
 </template>

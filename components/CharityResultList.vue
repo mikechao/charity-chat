@@ -102,6 +102,15 @@ watch(() => props.externalCharityDetails, (newDetails) => {
       <p class="text-gray-600">
         <span class="text-lg font-semibold text-blue-600 bg-blue-100 rounded px-3 py-1 shadow">Found {{ charities.length }} {{ charities.length === 1 ? 'charity' : 'charities' }}</span>
       </p>
+      <UButton
+        class="mt-4"
+        color="primary"
+        size="lg"
+        icon="i-heroicons-arrow-down-circle"
+        @click="$emit('loadMore')"
+      >
+        Load More
+      </UButton>
     </div>
 
     <!-- Loading State -->
