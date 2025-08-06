@@ -10,12 +10,14 @@ import { createSearchParametersSchema } from '~/types/charity-search-params'
 const showResults = ref(false)
 const charityResults = ref<CharitySearchResult[]>([])
 const currentCharityDetails = ref<CharityDetails | null>(null)
+let currentCharitySearchParams: CharitySearchParams | null = null
 
 async function registerTools(server: McpServer) {
   // #region charity_search tool registration
   const charitySearchParamsSchema = await createSearchParametersSchema()
   server.tool('charity_search', 'Search for charities that the user is interested in', charitySearchParamsSchema.shape, async (params) => {
     try {
+      currentCharitySearchParams = params
       const response = await $fetch<CharitySearchResult[]>('/api/charity/search', {
         method: 'POST',
         body: params,
@@ -79,8 +81,38 @@ async function registerTools(server: McpServer) {
   server.tool('clear_charity_results', 'Clear the current charity search results', {}, async () => {
     const count = charityResults.value.length
     charityResults.value = []
+    currentCharitySearchParams = null
     return {
       content: [{ type: 'text' as const, text: `Cleared ${count} charity search results.` }],
+    }
+  })
+  // #endregion
+
+  // #region get_next_page tool registration
+  server.tool('get_next_page', 'Get the next page of charity search results', {}, async () => {
+    if (!currentCharitySearchParams) {
+      return {
+        content: [{ type: 'text' as const, text: 'No previous search parameters found. Please perform a search first.' }],
+      }
+    }
+
+    // Increment the start index for pagination
+    currentCharitySearchParams.start = (currentCharitySearchParams.start || 0) + currentCharitySearchParams.rows
+
+    const response = await $fetch<CharitySearchResult[]>('/api/charity/search', {
+      method: 'POST',
+      body: currentCharitySearchParams,
+    })
+
+    if (response.length === 0) {
+      return {
+        content: [{ type: 'text' as const, text: 'No more results found.' }],
+      }
+    }
+
+    charityResults.value = [...charityResults.value, ...response]
+    return {
+      content: [{ type: 'text' as const, text: `Found ${response.length} more charities.` }],
     }
   })
   // #endregion
