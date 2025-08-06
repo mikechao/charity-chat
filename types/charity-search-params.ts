@@ -35,6 +35,7 @@ export async function createSearchParametersSchema() {
       : z.string().optional().describe('The category a charity belongs to, multiple values can be passed and separated by a coma'),
     eligible: z.string().optional().describe('eligible=1 will return only organizations that are tax-deductible and in good standing with the IRS'),
     rows: z.number().optional().default(20).describe('Records Per Page. Default Value = 20'),
+    start: z.number().optional().default(0).describe('Start Index. Default Value = 0. Used for pagination. Always start at 0'),
   })
 }
 
