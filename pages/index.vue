@@ -95,30 +95,8 @@ async function registerTools(server: McpServer) {
 
   // #region get_next_page tool registration
   server.tool('get_next_page', 'Get the next page of charity search results', {}, async () => {
-    if (!currentCharitySearchParams) {
-      return {
-        content: [{ type: 'text' as const, text: 'No previous search parameters found. Please perform a search first.' }],
-      }
-    }
-
-    // Increment the start index for pagination
-    currentCharitySearchParams.start = (currentCharitySearchParams.start || 0) + currentCharitySearchParams.rows
-
-    const response = await $fetch<CharitySearchResult[]>('/api/charity/search', {
-      method: 'POST',
-      body: currentCharitySearchParams,
-    })
-
-    if (response.length === 0) {
-      return {
-        content: [{ type: 'text' as const, text: 'No more results found.' }],
-      }
-    }
-
-    charityResults.value = [...charityResults.value, ...response]
-    return {
-      content: [{ type: 'text' as const, text: `Found ${response.length} more charities.` }],
-    }
+    const results = await handleLoadMore()
+    return results
   })
   // #endregion
 }
@@ -142,8 +120,31 @@ watch(currentCharityDetails, (newDetails) => {
   }
 })
 
-function handleLoadMore() {
-  console.log('Load more charities')
+async function handleLoadMore() {
+  if (!currentCharitySearchParams) {
+    return {
+      content: [{ type: 'text' as const, text: 'No previous search parameters found. Please perform a search first.' }],
+    }
+  }
+
+  // Increment the start index for pagination
+  currentCharitySearchParams.start = (currentCharitySearchParams.start || 0) + currentCharitySearchParams.rows
+
+  const response = await $fetch<CharitySearchResult[]>('/api/charity/search', {
+    method: 'POST',
+    body: currentCharitySearchParams,
+  })
+
+  if (response.length === 0) {
+    return {
+      content: [{ type: 'text' as const, text: 'No more results found.' }],
+    }
+  }
+
+  charityResults.value = [...charityResults.value, ...response]
+  return {
+    content: [{ type: 'text' as const, text: `Found ${response.length} more charities.` }],
+  }
 }
 </script>
 
