@@ -2,7 +2,16 @@
 
 **Discover meaningful charities to support through AI-powered conversations**
 
-Charity Chat is a modern web application that connects users with verified charitable organizations through an intuitive AI-powered interface. Built with Nuxt.js and integrating with the Model Context Protocol (MCP), it provides personalized charity recommendations based on user preferences and giving goals.
+Charity Chat is a modern web application that connects users with verified charitable organizations through an intuitive AI-powered chat interface. Built with Nuxt.js and integrating with the Model Context Protocol (MCP) by using [WebMCP](https://github.com/MiguelsPizza/WebMCP), it provides personalized charity recommendations based on user preferences and giving goals.
+
+## 🚀 Tech Stack
+
+- **Framework**: [Nuxt.js 3](https://nuxt.com/) - Vue.js framework
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) + [Nuxt UI](https://ui.nuxt.com/)
+- **AI Integration**: [WebMCP](https://github.com/MiguelsPizza/WebMCP)
+- **API**: [CharityAPI.com](https://charityapi.com/) for verified charity data
+- **Type Safety**: TypeScript with Zod validation
+- **Package Manager**: pnpm
 
 ## ✨ Features
 
@@ -13,15 +22,6 @@ Charity Chat is a modern web application that connects users with verified chari
 - 📱 **Responsive Design** - Beautiful UI with Tailwind CSS and Nuxt UI components
 - 🔄 **Real-time Results** - Dynamic search results with pagination
 - 📋 **Detailed Information** - View comprehensive charity details including financial data and activities
-
-## 🚀 Tech Stack
-
-- **Framework**: [Nuxt.js 3](https://nuxt.com/) - Vue.js framework
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) + [Nuxt UI](https://ui.nuxt.com/)
-- **AI Integration**: [WebMCP)](https://github.com/MiguelsPizza/WebMCP)
-- **API**: [CharityAPI.com](https://charityapi.com/) for verified charity data
-- **Type Safety**: TypeScript with Zod validation
-- **Package Manager**: pnpm
 
 ## 🛠️ Setup
 
