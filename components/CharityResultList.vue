@@ -95,22 +95,23 @@ watch(() => props.externalCharityDetails, (newDetails) => {
 <template>
   <div class="charity-results-container">
     <!-- Header Section -->
-    <div class="mb-6 sticky top-0 z-30 bg-gradient-to-r from-blue-50 via-white to-blue-50 backdrop-blur-lg shadow-lg border-b border-blue-300 px-8 py-6 flex flex-col items-center">
-      <h1 class="text-3xl font-bold text-gray-800 mb-2">
+    <div class="mb-6 sticky top-0 z-30 bg-gradient-to-r from-blue-50 via-white to-blue-50 backdrop-blur-lg shadow-lg border-b border-blue-300 px-8 py-6 flex flex-col">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2 text-left">
         <span class="inline-block text-4xl font-extrabold text-blue-700 drop-shadow-sm tracking-tight">Charity Search Results</span>
       </h1>
-      <p class="text-gray-600">
-        <span class="text-lg font-semibold text-blue-600 bg-blue-100 rounded px-3 py-1 shadow">Found {{ charities.length }} {{ charities.length === 1 ? 'charity' : 'charities' }}</span>
-      </p>
-      <UButton
-        class="mt-4"
-        color="primary"
-        size="lg"
-        icon="i-heroicons-arrow-down-circle"
-        @click="$emit('loadMore')"
-      >
-        Load More
-      </UButton>
+      <div class="flex items-center justify-between w-full">
+        <p class="text-gray-600 text-left">
+          <span class="text-lg font-semibold text-blue-600 bg-blue-100 rounded px-3 py-1 shadow">Found {{ charities.length }} {{ charities.length === 1 ? 'charity' : 'charities' }}</span>
+        </p>
+        <UButton
+          color="primary"
+          size="lg"
+          icon="i-heroicons-arrow-down-circle"
+          @click="$emit('loadMore')"
+        >
+          Load More
+        </UButton>
+      </div>
     </div>
 
     <!-- Loading State -->
