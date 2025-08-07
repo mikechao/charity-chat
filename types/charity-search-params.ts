@@ -19,7 +19,7 @@ async function fetchCharityCategories(): Promise<string[]> {
 }
 
 export async function createSearchParametersSchema() {
-  const categories = await fetchCharityCategories()
+  // const categories = await fetchCharityCategories()
   return z.object({
     searchTerm: z.string().min(1, 'Search term is required').describe('Charity Name or Keyword. Example: "humane society" or "cancer"'),
     city: z.string().optional().describe('City name. Example: "Miami"'),
