@@ -67,4 +67,10 @@ export interface CharitySearchResult {
    * Search Result Score
    */
   score: number
+  /**
+   * The donation url, not part of the documented API response
+   * but is included in the response
+   */
+  donationUrl: string
+
 }
